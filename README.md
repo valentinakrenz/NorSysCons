@@ -1,5 +1,5 @@
 # NorSysCons
-Data and Code for the submitted manuscript "Noradrenergic arousal after encoding reverses the course of systems consolidation in humans"
+Data and Code for the manuscript "Noradrenergic arousal after encoding reverses the course of systems consolidation in humans"
 
 DATA
 
