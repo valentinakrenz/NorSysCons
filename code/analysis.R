@@ -16,7 +16,7 @@
     rstudioapi::getActiveDocumentContext
     setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
   #load wide file data
-    wide_file <- read_excel('./data.xlsx')
+    wide_file <- read_excel('C:/Users/ap2mitarbeiter.AP2-4037/Documents/GitHub/NorSysCons/data/wideFile.xlsx')
   #define factos
     wide_file$Name <- factor(wide_file$Name) 
     wide_file$drug <- factor(wide_file$drug)
