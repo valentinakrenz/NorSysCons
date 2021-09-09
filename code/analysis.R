@@ -16,7 +16,7 @@
     rstudioapi::getActiveDocumentContext
     setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
   #load wide file data
-    wide_file <- read_excel('C:/Users/ap2mitarbeiter.AP2-4037/Documents/GitHub/NorSysCons/data/wideFile.xlsx')
+    wide_file <- read_excel('D:/GitHub/NorSysCons/data/data.xlsx')
   #define factos
     wide_file$Name <- factor(wide_file$Name) 
     wide_file$drug <- factor(wide_file$drug)
@@ -836,6 +836,117 @@
               wide_file$ERS_crossTrial_HC[wide_file$delay==1&wide_file$drug==1])
   
   
+      
+  # exploratory analyses of posterior areas
+      # t-tests
+      t.test(wide_file$recognitionVsEncoding_AngularGyrus[wide_file$delay==0&wide_file$drug==0],
+             wide_file$recognitionVsEncoding_AngularGyrus[wide_file$delay==1&wide_file$drug==0])
+      
+      cohensD(wide_file$recognitionVsEncoding_AngularGyrus[wide_file$delay==0&wide_file$drug==0],
+              wide_file$recognitionVsEncoding_AngularGyrus[wide_file$delay==1&wide_file$drug==0])
+      
+      t.test(wide_file$recognitionVsEncoding_AngularGyrus[wide_file$delay==0&wide_file$drug==1],
+             wide_file$recognitionVsEncoding_AngularGyrus[wide_file$delay==1&wide_file$drug==1])
+      
+      cohensD(wide_file$recognitionVsEncoding_AngularGyrus[wide_file$delay==0&wide_file$drug==1],
+              wide_file$recognitionVsEncoding_AngularGyrus[wide_file$delay==1&wide_file$drug==1])
+      
+      # supplementary figure 3a
+      long_group_recognitionVsEncoding_AngularGyrus= summarySE(data=wide_file,
+                                             measurevar = "recognitionVsEncoding_AngularGyrus",
+                                             groupvars = c("delay","drug"))
+      
+      pdf("SupplementaryFigure3a.pdf")
+      p <- ggplot(data = long_group_recognitionVsEncoding_AngularGyrus, aes(x=drug, y=recognitionVsEncoding_AngularGyrus, fill = delay))+
+        geom_bar(stat="identity",position=position_dodge())+
+        #theme_classic()+
+        geom_errorbar(aes(ymin=recognitionVsEncoding_AngularGyrus-se,ymax=recognitionVsEncoding_AngularGyrus+se),
+                      position=position_dodge(0.9),width = 0, size = 1.7)+
+        geom_point(alpha = 0.15, position = position_jitterdodge(jitter.width = 0.3, dodge.width = 0.95),
+                   data=wide_file, aes(y=recognitionVsEncoding_AngularGyrus, x=drug, fill=delay), size=3.5)+
+        labs(x="drug", y = "recognition > encoding (beta)")+
+        theme_classic()
+      p + theme_classic() + 
+        scale_x_discrete(labels=c("PLAC", "YOH"))+
+        scale_fill_manual(name = "delay", labels = c("1d","28d"), values=c("lightsteelblue","lightsteelblue4"))+
+        scale_shape_manual(values = c(1,10))+
+        #annotation PLAC 1d vs 28d
+        annotate("path", x = c(0.8, 1.2), y = c(0.65, 0.65), size=1.5) +
+        # stars !! change accordingly
+        annotate("text", x = 1, y = 0.68, label = "*", size = 13)+ 
+        # annotation YOH 1d vs 28d
+        #line
+        annotate("path", x = c(1.8, 2.2), y = c(0.65, 0.65), size=1.5) +
+        # stars !! change accordingly
+        annotate("text", x = 2, y = 0.68, label = "*", size = 13)+ 
+        theme(
+          axis.title.y=element_text(size=28),
+          axis.text.y = element_text(size = 26, colour="black"),
+          axis.title.x=element_text(size=28),
+          axis.text.x = element_text(size = 28, colour="black"),
+          legend.title = element_text(size = 28),
+          legend.text = element_text(size = 26),
+          axis.line = element_line(size=1.75),
+          axis.ticks = element_line(size=1.0, colour="black"),
+          axis.ticks.length = unit(.0,"cm")
+        )  
+      dev.off()
+      
+      #change in precuneal activity from encoding to recognition on SVC-level
+        #t-tests
+        t.test(wide_file$recognitionVsEncoding_Precuneus_ROI[wide_file$delay==0&wide_file$drug==0],
+               wide_file$recognitionVsEncoding_Precuneus_ROI[wide_file$delay==1&wide_file$drug==0])
+        
+        cohensD(wide_file$recognitionVsEncoding_Precuneus_ROI[wide_file$delay==0&wide_file$drug==0],
+                wide_file$recognitionVsEncoding_Precuneus_ROI[wide_file$delay==1&wide_file$drug==0])
+        
+        t.test(wide_file$recognitionVsEncoding_Precuneus_ROI[wide_file$delay==0&wide_file$drug==1],
+               wide_file$recognitionVsEncoding_Precuneus_ROI[wide_file$delay==1&wide_file$drug==1])
+        
+        cohensD(wide_file$recognitionVsEncoding_Precuneus_ROI[wide_file$delay==0&wide_file$drug==1],
+                wide_file$recognitionVsEncoding_Precuneus_ROI[wide_file$delay==1&wide_file$drug==1])
+      
+      #supplementary figure 3b 
+      long_group_recognitionVsEncoding_Precuneus_ROI= summarySE(data=wide_file,
+                                                         measurevar = "recognitionVsEncoding_Precuneus_ROI",
+                                                         groupvars = c("delay","drug"))
+  
+      pdf("SupplementaryFigure3b.pdf")
+      p <- ggplot(data = long_group_recognitionVsEncoding_Precuneus_ROI, aes(x=drug, y=recognitionVsEncoding_Precuneus_ROI, fill = delay))+
+        geom_bar(stat="identity",position=position_dodge())+
+        geom_errorbar(aes(ymin=recognitionVsEncoding_Precuneus_ROI-se,ymax=recognitionVsEncoding_Precuneus_ROI+se),
+                      position=position_dodge(0.9),width = 0, size = 1.7)+
+        geom_point(alpha = 0.15, position = position_jitterdodge(jitter.width = 0.3, dodge.width = 0.95),
+                   data=wide_file, aes(y=recognitionVsEncoding_Precuneus_ROI, x=drug, fill=delay), size=3.5)+
+        labs(x="drug", y = "recognition > encoding (beta)")+
+        theme_classic()
+      p + theme_classic() + 
+        scale_x_discrete(labels=c("PLAC", "YOH"))+
+        scale_fill_manual(name = "delay", labels = c("1d","28d"), values=c("lightsteelblue","lightsteelblue4"))+
+        scale_shape_manual(values = c(1,10))+
+        #annotation PLAC 1d vs 28d
+        annotate("path", x = c(0.8, 1.2), y = c(0.65, 0.65), size=1.5) +
+        # stars !! change accordingly
+        annotate("text", x = 1, y = 0.68, label = "***", size = 13)+ 
+        # annotation YOH 1d vs 28d
+        #line
+        annotate("path", x = c(1.8, 2.2), y = c(0.65, 0.65), size=1.5) +
+        # stars !! change accordingly
+        annotate("text", x = 2, y = 0.68, label = "*", size = 13)+ 
+        theme(
+          axis.title.y=element_text(size=28),
+          axis.text.y = element_text(size = 26, colour="black"),
+          axis.title.x=element_text(size=28),
+          axis.text.x = element_text(size = 28, colour="black"),
+          legend.title = element_text(size = 28),
+          legend.text = element_text(size = 26),
+          axis.line = element_line(size=1.75),
+          axis.ticks = element_line(size=1.0, colour="black"),
+          axis.ticks.length = unit(.0,"cm")
+        )  
+      dev.off()
+      
+      
 ##supplemental material####
   #valence and arousal rating####
   t.test(wide_file$Neut_all_EmotRating_mean, wide_file$Neg_all_EmotRating_mean, paired = TRUE)
