@@ -43,21 +43,18 @@
       print(results)
 
     #show partial eta square
-      results<- aovEffectSize(results, effectSize = "pes")
-      aovDispTable(results)
-
       library(psychReport)
       results<- aovEffectSize(results, effectSize = "pes")
       aovDispTable(results)
 
     #post-hoc t-tests####
-      #d1
+      #T1
         t.test(x = long_file$diastolicBloodpressure[long_file$drug ==1 & long_file$time=="-10min"], 
                 y = long_file$diastolicBloodpressure[long_file$drug ==0 & long_file$time=="-10min"])
 
         cohensD(long_file$diastolicBloodpressure[long_file$drug ==1 & long_file$time=="-10min"], 
                 long_file$diastolicBloodpressure[long_file$drug ==0 & long_file$time=="-10min"])
-      #d2
+      #T2
         t.test(x = long_file$diastolicBloodpressure[long_file$drug ==1 & long_file$time=="35min"], 
                 y = long_file$diastolicBloodpressure[long_file$drug ==0 & long_file$time=="35min"])
 
@@ -259,7 +256,7 @@
   #delay x drug x emotion LMM on free recall####
     describe(wide_file$FreeRecall_Score)
     #get trial-wise long-file
-      freeRecall_file <- read_excel('./longFile_FreeRecall.xlsx') # read in prepared long_file for free Recall
+      freeRecall_file <- read_excel('D:/GitHub/NorSysCons/data/longFile_FreeRecall.xlsx') # read in prepared long_file for free Recall
 
     #define factors
       freeRecall_file$Name <- factor(freeRecall_file$Name) 
@@ -406,26 +403,6 @@
             )
     dev.off()
 
-  #post-hoc t-tests####
-    
-    t.test(wide_file$dPrime[wide_file$delay==0&wide_file$drug==0],
-            wide_file$dPrime[wide_file$delay==1&wide_file$drug==0])
-
-    cohensD(wide_file$dPrime[wide_file$delay==0&wide_file$drug==0],
-            wide_file$dPrime[wide_file$delay==1&wide_file$drug==0])
-
-    t.test(wide_file$dPrime[wide_file$delay==0&wide_file$drug==1],
-            wide_file$dPrime[wide_file$delay==1&wide_file$drug==1])
-
-    cohensD(wide_file$dPrime[wide_file$delay==0&wide_file$drug==1],
-            wide_file$dPrime[wide_file$delay==1&wide_file$drug==1])
-
-    t.test(wide_file$dPrime[wide_file$delay==1&wide_file$drug==0],
-          wide_file$dPrime[wide_file$delay==1&wide_file$drug==1])
-
-    cohensD(wide_file$dPrime[wide_file$delay==0&wide_file$drug==0],
-            wide_file$dPrime[wide_file$delay==0&wide_file$drug==1])
-
   #bar-plot dPrime####
     #summarize for for error bars
       datSummarized = summarySE(data=wide_file,
@@ -448,17 +425,6 @@
             scale_x_discrete(labels=c("PLAC", "YOH"))+
             scale_fill_manual(name = "delay", labels = c("1d","28d"), values=c("lightsteelblue","lightsteelblue4"))+
             scale_shape_manual(values = c(1,10))+
-            ##annotation PLAC 1d vs 28d
-            annotate("path", x = c(0.8, 1.2), y = c(3.4, 3.4), size=1.5) +
-            ## stars 
-            annotate("text", x = 1, y = 3.45, label = "***", size = 12)+ 
-            ## annotation YOH 1d vs 28d
-            ##line
-            annotate("path", x = c(1.8, 2.2), y = c(3.4, 3.4), size=1.5) +
-            ## stars  
-            annotate("text", x = 2, y = 3.45, label = "**", size = 13)+ 
-            ##sign. interaction
-            annotate("text", x = 1.2, y = 4.5, label = "delay x drug: P = 0.029", size = 6)+ 
             theme(
                   axis.title.y=element_text(size=28),
                   axis.text.y = element_text(size = 26, colour="black"),
@@ -492,12 +458,6 @@
       
       cohensD(wide_file$oldVsnew_HC[wide_file$delay==1&wide_file$drug==1],
               wide_file$oldVsnew_HC[wide_file$delay==1&wide_file$drug==0])
-      
-      t.test(wide_file$oldVsnew_HC[wide_file$delay==0&wide_file$drug==1],
-             wide_file$oldVsnew_HC[wide_file$delay==0&wide_file$drug==0])
-      
-      cohensD(wide_file$oldVsnew_HC[wide_file$delay==0&wide_file$drug==1],
-              wide_file$oldVsnew_HC[wide_file$delay==0&wide_file$drug==0])  
       
     #bar plot####
       #summarize for error bars
